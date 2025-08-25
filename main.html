@@ -11,21 +11,10 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
       background: #f4f4f4;
     }
     .container {
       text-align: center;
-    }
-    input {
-      margin: 5px;
-      padding: 8px;
-    }
-    button {
-      margin: 10px;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-size: 1rem;
     }
     #cells {
       display: grid;
@@ -33,7 +22,6 @@
       grid-template-rows: repeat(3, 100px);
       gap: 5px;
       margin: 20px auto;
-      width: max-content;
     }
     #cells div {
       display: flex;
@@ -54,14 +42,12 @@
 <body>
   <div class="container">
     <h1>TIC TAC TOE</h1>
-
-    <!-- Initial Input Section -->
     <label for="player-1">Player 1</label>
     <input type="text" id="player-1" placeholder="Enter name" required>
-    <br>
+    <br><br>
     <label for="player-2">Player 2</label>
     <input type="text" id="player-2" placeholder="Enter name" required>
-    <br>
+    <br><br>
     <button id="submit">Start Game</button>
   </div>
 
@@ -78,7 +64,7 @@
         return;
       }
 
-      // Replace UI with game board
+      // Replace form with game board
       container.innerHTML = `
         <h1>TIC TAC TOE</h1>
         <div class="message">${player1}, you're up</div>
@@ -103,21 +89,15 @@
       let board = Array(9).fill(null);
       let gameOver = false;
 
-      // Winning combinations
       const winPatterns = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+        [0, 4, 8], [2, 4, 6]             // diagonals
       ];
 
       function checkWinner() {
         for (let pattern of winPatterns) {
-          const [a, b, c] = pattern;
+          let [a, b, c] = pattern;
           if (board[a] && board[a] === board[b] && board[a] === board[c]) {
             return true;
           }
@@ -148,7 +128,6 @@
             return;
           }
 
-          // Switch turns
           if (currentPlayer === player1) {
             currentPlayer = player2;
             currentSymbol = "O";
