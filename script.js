@@ -1,1 +1,95 @@
 //your JS code here. If required.
+  const container = document.querySelector('.container');
+    const submitBtn = document.getElementById('submit');
+
+    submitBtn.addEventListener('click', () => {
+      const player1 = document.getElementById('player-1').value.trim();
+      const player2 = document.getElementById('player-2').value.trim();
+
+      if (!player1 || !player2) {
+        alert("Please enter names for both players!");
+        return;
+      }
+
+      // Replace UI with game board
+      container.innerHTML = `
+        <h1>TIC TAC TOE</h1>
+        <div class="message">${player1}, you're up</div>
+        <div id="cells">
+          <div id="1"></div>
+          <div id="2"></div>
+          <div id="3"></div>
+          <div id="4"></div>
+          <div id="5"></div>
+          <div id="6"></div>
+          <div id="7"></div>
+          <div id="8"></div>
+          <div id="9"></div>
+        </div>
+      `;
+
+      const cells = document.querySelectorAll('#cells div');
+      const messageDiv = document.querySelector('.message');
+
+      let currentPlayer = player1;
+      let currentSymbol = "X";
+      let board = Array(9).fill(null);
+      let gameOver = false;
+
+      // Winning combinations
+      const winPatterns = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+      function checkWinner() {
+        for (let pattern of winPatterns) {
+          const [a, b, c] = pattern;
+          if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function checkDraw() {
+        return board.every(cell => cell !== null);
+      }
+
+      cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+          if (gameOver || board[index]) return;
+
+          board[index] = currentSymbol;
+          cell.textContent = currentSymbol;
+
+          if (checkWinner()) {
+            messageDiv.textContent = `${currentPlayer}, congratulations you won! 🎉`;
+            gameOver = true;
+            return;
+          }
+
+          if (checkDraw()) {
+            messageDiv.textContent = "It's a draw!";
+            gameOver = true;
+            return;
+          }
+
+          // Switch turns
+          if (currentPlayer === player1) {
+            currentPlayer = player2;
+            currentSymbol = "O";
+          } else {
+            currentPlayer = player1;
+            currentSymbol = "X";
+          }
+          messageDiv.textContent = `${currentPlayer}, you're up`;
+        });
+      });
+    });
